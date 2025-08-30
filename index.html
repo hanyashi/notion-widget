@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aesthetic Time Widget</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Space Grotesk", sans-serif;
+        background-image: url("water-lilies.jpg");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: black;
+      }
+
+      .widget {
+        text-align: center;
+        padding: 30px;
+        width: 380px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 1px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+
+      .time {
+        font-size: 56px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+        color: #ffffff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .date {
+        font-size: 16px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        color: #f8f8ff;
+      }
+
+      .day {
+        font-size: 28px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      .quote-container {
+        margin-top: 5px;
+        padding: 5px;
+        border-radius: 1px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #b0c4de;
+      }
+
+      .quote {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 18px;
+        font-style: italic;
+        line-height: 1.5;
+        margin-bottom: 5px;
+      }
+
+      .author {
+        font-family: "Consolas", monospace;
+        font-size: 14px;
+        text-align: right;
+        color: #ffffff;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="widget">
+      <div class="day" id="day"></div>
+      <div class="date" id="date"></div>
+      <div class="time" id="time"></div>
+      <div class="quote-container">
+        <div class="quote" id="quote"></div>
+      </div>
+    </div>
+    <script>
+      const quotes = [
+        {
+          text: "we are but a mosaic of everyone and everything we've ever known.",
+        },
+      ];
+
+      function updateTimeAndDate() {
+        const currentDate = new Date();
+        const hours = String(currentDate.getHours()).padStart(2, "0");
+        const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+        const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+        const time = `${hours}:${minutes}:${seconds}`;
+
+        const options = {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        };
+        const fullDate = currentDate.toLocaleDateString("en-US", options);
+        const [weekday, ...rest] = fullDate.split(", ");
+
+        document.getElementById("day").textContent = weekday;
+        document.getElementById("date").textContent = rest.join(", ");
+        document.getElementById("time").textContent = time;
+      }
+
+      function formatQuote(text) {
+        return text.replace(/,\s+/g, ",<br>").replace(/\s+and\s+/g, "<br>and ");
+      }
+
+      function setRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const selectedQuote = quotes[randomIndex];
+        document.getElementById("quote").innerHTML = `${formatQuote(
+          selectedQuote.text
+        )}`;
+      }
+
+      updateTimeAndDate();
+      setRandomQuote();
+      setInterval(updateTimeAndDate, 1000);
+      setInterval(setRandomQuote, 60000);
+    </script>
+  </body>
+</html>
